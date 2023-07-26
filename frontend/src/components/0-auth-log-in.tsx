@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 
 const oauthProviders = [
   { name: 'Google', strategy: 'oauth_google', icon: 'google' },

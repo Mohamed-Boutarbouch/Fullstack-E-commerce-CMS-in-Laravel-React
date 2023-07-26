@@ -197,7 +197,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: Params) => {
   }, [user?.data, middleware, redirectIfAuthenticated, navigate]);
 
   useEffect(() => {
-    if (middleware === 'auth' && user?.error && window.location.pathname !== '/register') {
+    if (middleware === 'auth' && user?.error) {
       logout.mutate();
     }
   }, [user?.error, middleware, logout]);

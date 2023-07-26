@@ -13,18 +13,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Icons } from '@/components/icons';
-import { PasswordInput } from '@/components/password-input';
-import { Checkbox } from './ui/checkbox';
+import { Icons } from '@/components/ui/icons';
+import { PasswordInput } from '@/components/ui/password-input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/auth';
-import { useNavigate } from 'react-router-dom';
 
 type Inputs = z.infer<typeof logInSchema>;
 
 export function LogInForm() {
-  const { login } = useAuth({});
-
-  const navigate = useNavigate();
+  const { login } = useAuth({ middleware: 'guest', redirectIfAuthenticated: '/' });
 
   const form = useForm<Inputs>({
     resolver: zodResolver(logInSchema),
@@ -36,7 +33,7 @@ export function LogInForm() {
   });
 
   async function onSubmit(data: Inputs) {
-    await login.mutateAsync(data, { onSuccess: () => navigate('/') });
+    await login.mutateAsync(data);
   }
 
   return (
@@ -89,8 +86,10 @@ export function LogInForm() {
             </FormItem>
           )}
         />
-        <Button disabled={false}>
-          {false && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
+        <Button disabled={login.isLoading}>
+          {login.isLoading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          )}
           Log in
           <span className="sr-only">Log in</span>
         </Button>

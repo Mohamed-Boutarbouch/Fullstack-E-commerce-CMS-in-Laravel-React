@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input, type InputProps } from '@/components/ui/input';
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
@@ -36,6 +36,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
+
 PasswordInput.displayName = 'PasswordInput';
 
 export { PasswordInput };

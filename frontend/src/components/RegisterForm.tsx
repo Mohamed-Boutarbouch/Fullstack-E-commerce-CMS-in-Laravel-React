@@ -13,15 +13,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Icons } from '@/components/icons';
-import { PasswordInput } from '@/components/password-input';
+import { Icons } from '@/components/ui/icons';
+import { PasswordInput } from '@/components/ui/password-input';
 import { useAuth } from '@/hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
 type Inputs = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const { register } = useAuth({ middleware: 'guest' });
+  const { register } = useAuth({ middleware: 'guest', redirectIfAuthenticated: '/' });
 
   const navigate = useNavigate();
 
