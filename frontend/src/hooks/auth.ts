@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '../services/axiosClient';
 import { AxiosError, isAxiosError } from 'axios';
-import { useEffect, useState } from 'react';
-import { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 
 export interface User {
   id: number;
@@ -186,7 +185,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: Params) => {
         await fetchCsrfToken();
         await axiosClient.post('/logout');
       }
-      window.location.pathname = '/login';
+      window.location.pathname = '/log-in';
     },
     onSuccess: () => queryClient.removeQueries({ queryKey: ['user'] }),
   });
@@ -195,11 +194,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: Params) => {
     if (middleware === 'guest' && redirectIfAuthenticated && user?.data) {
       navigate(redirectIfAuthenticated);
     }
+  }, [user?.data, middleware, redirectIfAuthenticated, navigate]);
 
-    if (middleware === 'auth' && user?.error) {
+  useEffect(() => {
+    if (middleware === 'auth' && user?.error && window.location.pathname !== '/register') {
       logout.mutate();
     }
-  }, [user?.data, user?.error, logout, navigate, middleware, redirectIfAuthenticated]);
+  }, [user?.error, middleware, logout]);
 
   return {
     user,

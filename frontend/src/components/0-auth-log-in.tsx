@@ -19,7 +19,7 @@ export function OAuthLogIn() {
 
         return (
           <Button
-            aria-label={`Sign in with ${provider.name}`}
+            aria-label={`Log in with ${provider.name}`}
             key={provider.strategy}
             variant="outline"
             className="w-full bg-background sm:w-auto"

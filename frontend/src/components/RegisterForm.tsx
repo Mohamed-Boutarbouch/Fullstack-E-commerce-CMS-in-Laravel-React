@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { logInSchema } from '@/lib/validations/auth';
+import { registerSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -15,28 +15,28 @@ import {
 import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
 import { PasswordInput } from '@/components/password-input';
-import { Checkbox } from './ui/checkbox';
 import { useAuth } from '@/hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
-type Inputs = z.infer<typeof logInSchema>;
+type Inputs = z.infer<typeof registerSchema>;
 
-export function LogInForm() {
-  const { login } = useAuth({});
+export function RegisterForm() {
+  const { register } = useAuth({ middleware: 'guest' });
 
   const navigate = useNavigate();
 
   const form = useForm<Inputs>({
-    resolver: zodResolver(logInSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
-      remember: false,
+      password_confirmation: '',
     },
   });
 
   async function onSubmit(data: Inputs) {
-    await login.mutateAsync(data, { onSuccess: () => navigate('/') });
+    await register.mutateAsync(data, { onSuccess: () => navigate('/log-in') });
   }
 
   return (
@@ -45,6 +45,19 @@ export function LogInForm() {
         className="grid gap-4"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" autoComplete="name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -65,9 +78,10 @@ export function LogInForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput
+                <Input
+                  type="password"
                   placeholder="**********"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   {...field}
                 />
               </FormControl>
@@ -77,22 +91,23 @@ export function LogInForm() {
         />
         <FormField
           control={form.control}
-          name="remember"
+          name="password_confirmation"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
+            <FormItem>
+              <FormLabel>Password Confirmation</FormLabel>
               <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                <PasswordInput placeholder="**********" autoComplete="new-password" {...field} />
               </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel className="cursor-pointer">Remember me</FormLabel>
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
-        <Button disabled={false}>
-          {false && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
-          Log in
-          <span className="sr-only">Log in</span>
+        <Button disabled={register.isLoading}>
+          {register.isLoading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          )}
+          Continue
+          <span className="sr-only">Continue to email verification page</span>
         </Button>
       </form>
     </Form>

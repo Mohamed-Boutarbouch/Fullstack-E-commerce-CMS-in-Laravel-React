@@ -12,7 +12,7 @@ import { Shell } from '@/components/Shell';
 import { LogInForm } from '@/components/LogInForm';
 import { OAuthLogIn } from '@/components/0-auth-log-in';
 
-export default function Login() {
+export default function LogIn() {
   return (
     <Shell className="max-w-lg">
       <Card>
@@ -36,7 +36,7 @@ export default function Login() {
           <div className="text-sm text-muted-foreground">
             <span className="mr-1 hidden sm:inline-block">Don&apos;t have an account?</span>
             <Link
-              aria-label="Sign up"
+              aria-label="Register"
               to="/register"
               className="text-primary underline-offset-4 transition-colors hover:underline"
             >
