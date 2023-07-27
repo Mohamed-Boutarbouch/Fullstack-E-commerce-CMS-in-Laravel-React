@@ -24,8 +24,8 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   if (user && user.isLoading) {
     return (
       <div className="flex justify-center">
-        <span className="border-2 border-primary p-2 rounded-lg mt-8">
-          <Icons.spinner size={50} className="h-8 w-8 animate-spin" aria-hidden="true" />
+        <span className="border-2 border-primary p-2 rounded-xl mt-8">
+          <Icons.spinner size={50} className="h-8 w-8 animate-spin" aria-hidden={!user.isLoading} />
         </span>
       </div>
     );
