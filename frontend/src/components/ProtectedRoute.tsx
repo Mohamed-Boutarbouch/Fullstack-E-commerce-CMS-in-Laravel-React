@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
 import { Icons } from '@/components/ui/icons';
+import CreateStoreModal from './CreateStoreModel';
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -21,17 +22,24 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.isLoading, isAuthenticated]);
 
-  if (user && user.isLoading) {
+  const spinner = (
+    <div className="flex justify-center">
+      <span className="border-2 border-primary p-2 rounded-xl mt-8">
+        <Icons.spinner size={50} className="h-8 w-8 animate-spin" aria-hidden={!user.isLoading} />
+      </span>
+    </div>
+  );
+
+  if (user && user.isLoading) return spinner;
+
+  if (isAuthenticated) {
     return (
-      <div className="flex justify-center">
-        <span className="border-2 border-primary p-2 rounded-xl mt-8">
-          <Icons.spinner size={50} className="h-8 w-8 animate-spin" aria-hidden={!user.isLoading} />
-        </span>
-      </div>
+      <>
+        <CreateStoreModal />
+        {children}
+      </>
     );
   }
-
-  if (isAuthenticated) return children;
 
   return (
     <p>

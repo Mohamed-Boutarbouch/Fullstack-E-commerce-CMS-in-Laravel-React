@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useState } from 'react';
 
 interface ModalContextType {
   isOpen: boolean;
@@ -6,16 +6,7 @@ interface ModalContextType {
   onClose: () => void;
 }
 
-const ModalContext = createContext<ModalContextType | undefined>(undefined);
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useModalContext() {
-  const context = useContext(ModalContext);
-  if (!context) {
-    throw new Error('useModalContext must be used within a ModalProvider');
-  }
-  return context;
-}
+export const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);

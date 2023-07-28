@@ -59,6 +59,7 @@ import {
   X,
   type LucideIcon,
   type LucideProps,
+  Store,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -115,7 +116,8 @@ export const Icons = {
   dollarSign: DollarSign,
   cart: ShoppingCart,
   product: Package,
-  store: ShoppingBag,
+  store: Store,
+  shoppingBag: ShoppingBag,
   chart: BarChart3,
   upload: UploadCloud,
   placeholder: Image,

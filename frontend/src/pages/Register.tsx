@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { RegisterForm } from '@/components/RegisterForm';
 import { Shell } from '@/components/Shell';
-import { OAuthLogIn } from '@/components/0-auth-log-in';
+import { OAuthLogIn } from '@/components/0AuthLogIn';
 
 export default function Register() {
   return (

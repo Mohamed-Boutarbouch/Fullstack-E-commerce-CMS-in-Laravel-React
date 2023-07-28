@@ -1,14 +1,16 @@
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import { AxiosError, isAxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import axiosClient from '../services/axiosClient';
-import { AxiosError, isAxiosError } from 'axios';
-import { useEffect, useState, Dispatch, SetStateAction } from 'react';
+
+import axiosClient from '@/services/axiosClient';
+import { fetchCsrfToken } from '@/services/csrfToken';
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  email_verified_at: string;
+  email_verified_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -89,8 +91,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: Params) => {
   });
 
   const isAuthenticated = !!user?.data;
-
-  const fetchCsrfToken = () => axiosClient.get('/csrf-cookie');
 
   const register = useMutation<void, ErrorMutation, RegisterParams>({
     mutationFn: async (props) => {

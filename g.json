@@ -1,0 +1,10 @@
+data: {
+  data: {
+    id: "99c13d90-1a70-4c41-b7c6-a98c8d5b3176",
+    name: "teruenrje",
+    userId: "99bd4c56-4437-42f8-b42d-1e897b9c83bf",
+    createdAt: "2023-07-28T13:53:25.000000Z",
+    updatedAt: "2023-07-28T13:53:25.000000Z"
+  },
+  message: "The store teruenrje created successfully"
+},

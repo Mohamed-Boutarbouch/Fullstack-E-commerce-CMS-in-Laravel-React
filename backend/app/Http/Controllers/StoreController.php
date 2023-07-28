@@ -16,7 +16,8 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return new StoreCollection(Store::all());
+        return StoreResource::collection(Store::all());
+        // return new StoreCollection(Store::all());
     }
 
     /**
@@ -29,10 +30,7 @@ class StoreController extends Controller
 
         $store = Store::create($validatedData);
 
-        return response()->json([
-            'message' => 'The store ' . $store->name . ' created successfully',
-            'data' => new StoreResource($store)
-        ]);
+        return new StoreResource($store);
     }
 
     /**

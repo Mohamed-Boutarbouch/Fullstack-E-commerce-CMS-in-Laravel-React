@@ -23,14 +23,14 @@ class StoreStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'uuid', 'exists:stores,id'],
+            'user_id' => ['required', 'uuid', 'exists:users,id'],
         ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-            'user_id' => $this->storeId,
+            'user_id' => $this->userId,
         ]);
     }
 }

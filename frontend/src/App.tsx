@@ -11,56 +11,60 @@ import LogIn from '@/pages/LogIn';
 import Register from '@/pages/Register';
 import Overview from '@/pages/Overview';
 import ThemeProvider from '@/context/ThemeProvider';
+import { ModalProvider } from '@/context/ModalContext';
 
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+      <ModalProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
 
-        <BrowserRouter>
-          <Routes>
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate replace to="overview" />} />
-              <Route path="overview" element={<Overview />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                {/* <Route index element={<Navigate replace to="overview" />} /> */}
+                <Route index element={<div>Hello</div>} />
+                <Route path=":storeId/overview" element={<Overview />} />
+                <Route path=":storeId/settings" element={<Settings />} />
+              </Route>
 
-            <Route path="register" element={<Register />} />
-            <Route path="log-in" element={<LogIn />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="register" element={<Register />} />
+              <Route path="log-in" element={<LogIn />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
 
-        <Toaster
-          position="bottom-center"
-          gutter={12}
-          containerStyle={{ margin: '8px' }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 5000,
-            },
-            style: {
-              fontSize: '16px',
-              maxWidth: '500px',
-              padding: '16px 24px',
-              backgroundColor: 'var(--color-grey-0)',
-              color: 'var(--color-grey-700)',
-            },
-          }}
-        />
-      </QueryClientProvider>
+          <Toaster
+            position="bottom-center"
+            gutter={12}
+            containerStyle={{ margin: '8px' }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: '16px',
+                maxWidth: '500px',
+                padding: '16px 24px',
+                backgroundColor: 'var(--color-grey-0)',
+                color: 'var(--color-grey-700)',
+              },
+            }}
+          />
+        </QueryClientProvider>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

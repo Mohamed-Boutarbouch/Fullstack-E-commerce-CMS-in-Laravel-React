@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\CategoryController;
@@ -15,6 +16,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
   return $request->user();
 });
 
+Route::apiResource('users', UserController::class);
 Route::apiResource('stores', StoreController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('billboards', BillboardController::class);
