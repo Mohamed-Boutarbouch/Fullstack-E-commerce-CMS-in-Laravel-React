@@ -1,7 +1,8 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { Modal } from '@/components/ui/modal';
 import { Input } from '@/components/ui/input';
@@ -17,13 +18,15 @@ import { useStoreModal } from '@/hooks/store-modal';
 import { Button } from '@/components/ui/button';
 import { storeNameSchema } from '@/lib/validations/store';
 import { useAuth } from '@/hooks/auth';
-import { createStore } from '@/services/storeServices';
+import { useCreateStoreMutation } from '@/hooks/create-store-mutation';
 
 export default function CreateStoreModal() {
   const { user } = useAuth({ middleware: 'auth' });
-  const userId = user.data!.id;
+  const userId = user.data && user.data!.id;
 
-  const queryClient = useQueryClient();
+  const storeMutation = useCreateStoreMutation();
+
+  const navigate = useNavigate();
 
   const storeModal = useStoreModal();
 
@@ -34,15 +37,20 @@ export default function CreateStoreModal() {
     },
   });
 
-  const storeMutation = useMutation({
-    mutationFn: createStore,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userStores'] }),
-  });
-
   async function onSubmit(values: z.infer<typeof storeNameSchema>) {
-    // TODO: Redirect the newly created store with storeId onSuccess
-    await storeMutation.mutateAsync({ ...values, userId });
+    const formData = { ...values, userId };
+
+    await storeMutation.mutateAsync(formData);
   }
+
+  // TODO: Fix the model component renders the second time when the store is created for the first time (due to redirection to the '/' index page). This happens when the user have no store created but and for users who has a selected store and reloads the page.
+  // Warning: React has detected a change in the order of Hooks called by ProtectedLayout. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks. ProtectedLayout.tsx: 27.
+  useEffect(() => {
+    if (storeMutation.isSuccess) {
+      navigate(`/${storeMutation.data.id}/overview`);
+      storeModal.onClose();
+    }
+  }, [storeMutation.isSuccess, storeMutation.data, navigate, storeModal]);
 
   return (
     <Modal

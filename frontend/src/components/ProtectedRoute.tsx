@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
 import { Icons } from '@/components/ui/icons';
-import CreateStoreModal from './CreateStoreModel';
+import CreateStoreModal from '@/components/CreateStoreModel';
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -11,16 +11,7 @@ interface ProtectedLayoutProps {
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const { isAuthenticated, user } = useAuth({});
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuthenticated && !user.isLoading) {
-      navigate('/log-in');
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isLoading, isAuthenticated]);
 
   const spinner = (
     <div className="flex justify-center">
@@ -30,9 +21,22 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     </div>
   );
 
-  if (user && user.isLoading) return spinner;
+  if (user.isLoading) return spinner;
 
-  if (isAuthenticated) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    if (!isAuthenticated && !user.isLoading) {
+      navigate('/log-in');
+    } else if (
+      isAuthenticated &&
+      user.data?.stores?.length !== undefined &&
+      user.data.stores.length === 0
+    ) {
+      navigate('/');
+    }
+  }, [isAuthenticated, user.isLoading, user.data, navigate]);
+
+  if (isAuthenticated && user.data?.stores?.length !== undefined && user.data?.stores?.length > 0) {
     return (
       <>
         <CreateStoreModal />

@@ -1,8 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 
+import CreateStorePage from '@/pages/CreateStorePage';
 import Settings from '@/pages/Settings';
 import PageNotFound from '@/pages/PageNotFound';
 import AppLayout from '@/components/AppLayout';
@@ -32,11 +33,11 @@ export default function App() {
                 }
               >
                 {/* <Route index element={<Navigate replace to="overview" />} /> */}
-                <Route index element={<div>Hello</div>} />
                 <Route path=":storeId/overview" element={<Overview />} />
                 <Route path=":storeId/settings" element={<Settings />} />
               </Route>
 
+              <Route path="/" element={<CreateStorePage />} />
               <Route path="register" element={<Register />} />
               <Route path="log-in" element={<LogIn />} />
               <Route path="*" element={<PageNotFound />} />
