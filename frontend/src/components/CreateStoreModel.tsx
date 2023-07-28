@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Modal } from '@/components/ui/modal';
 import { Input } from '@/components/ui/input';
@@ -23,6 +23,8 @@ export default function CreateStoreModal() {
   const { user } = useAuth({ middleware: 'auth' });
   const userId = user.data!.id;
 
+  const queryClient = useQueryClient();
+
   const storeModal = useStoreModal();
 
   const form = useForm<z.infer<typeof storeNameSchema>>({
@@ -34,9 +36,11 @@ export default function CreateStoreModal() {
 
   const storeMutation = useMutation({
     mutationFn: createStore,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userStores'] }),
   });
 
   async function onSubmit(values: z.infer<typeof storeNameSchema>) {
+    // TODO: Redirect the newly created store with storeId onSuccess
     await storeMutation.mutateAsync({ ...values, userId });
   }
 

@@ -38,7 +38,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
 
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
-    navigate(`/${store.value}`);
+    navigate(`/${store.value}/overview`);
   };
 
   return (

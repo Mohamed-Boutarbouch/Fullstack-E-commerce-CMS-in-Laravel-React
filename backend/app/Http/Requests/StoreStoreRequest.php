@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreStoreRequest extends FormRequest
 {
@@ -22,7 +23,9 @@ class StoreStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255',                 Rule::unique('stores')->where(function ($query) {
+                return $query->where('user_id', $this->userId);
+            })],
             'user_id' => ['required', 'uuid', 'exists:users,id'],
         ];
     }

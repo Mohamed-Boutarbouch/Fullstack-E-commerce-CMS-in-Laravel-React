@@ -25,6 +25,10 @@ export async function createStore(values: CreateStoreProps) {
 
     toast.success(`The store ${data.name} created successfully`);
   } catch (error) {
-    toast.error('Something went wrong: ' + error);
+    console.log(error);
+
+    const errorMessage = (error as { message: string }).message;
+
+    toast.error('Something went wrong: ' + errorMessage);
   }
 }
