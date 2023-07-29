@@ -34,9 +34,7 @@ export default function CreateStoreModal() {
   });
 
   async function onSubmit(values: z.infer<typeof storeNameSchema>) {
-    const formData = { ...values, userId };
-
-    await storeMutation.mutateAsync(formData);
+    await storeMutation.mutateAsync({ ...values, userId });
   }
 
   useEffect(() => {
@@ -45,6 +43,13 @@ export default function CreateStoreModal() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeMutation.isSuccess]);
+
+  // TODO: Reset the form after closing the model.
+  useEffect(() => {
+    if (!storeModal.isOpen) {
+      form.reset({ name: '' });
+    }
+  }, [form, form.reset, storeModal.isOpen]);
 
   return (
     <Modal
