@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
+import { useReadLocalStorage } from 'usehooks-ts';
 
 import { logInSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
@@ -21,7 +22,12 @@ import { useAuth } from '@/hooks/auth';
 type Inputs = z.infer<typeof logInSchema>;
 
 export function LogInForm() {
-  const { login } = useAuth({ middleware: 'guest', redirectIfAuthenticated: '/' });
+  const currentStoreId = useReadLocalStorage('currentStoreId');
+
+  const { login } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: currentStoreId ? `/${currentStoreId}/overview` : '/',
+  });
 
   const form = useForm<Inputs>({
     resolver: zodResolver(logInSchema),

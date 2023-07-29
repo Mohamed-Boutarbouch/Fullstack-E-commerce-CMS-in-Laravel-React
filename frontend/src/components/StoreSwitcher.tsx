@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef, useState } from 'react';
 import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -25,8 +26,11 @@ interface StoreSwitcherProps extends PopoverTriggerProps {
 
 export default function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
   const params = useParams();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const storeModal = useStoreModal();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
 
   const formattedItems = items.map((item) => ({
     label: item.name,
@@ -37,7 +41,8 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
 
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
-    window.location.assign(`/${store.value}/overview`);
+    setCurrentStoreId(store.value);
+    navigate(`/${store.value}/overview`);
   };
 
   return (

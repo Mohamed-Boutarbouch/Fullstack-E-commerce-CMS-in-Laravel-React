@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { Modal } from '@/components/ui/modal';
 import { Input } from '@/components/ui/input';
@@ -26,6 +27,9 @@ export default function CreateStoreModal() {
   const storeMutation = useCreateStoreMutation();
   const storeModal = useStoreModal();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
+
   const form = useForm<z.infer<typeof storeNameSchema>>({
     resolver: zodResolver(storeNameSchema),
     defaultValues: {
@@ -39,6 +43,7 @@ export default function CreateStoreModal() {
 
   useEffect(() => {
     if (storeMutation.isSuccess) {
+      setCurrentStoreId(storeMutation.data.id);
       window.location.assign(`/${storeMutation.data.id}/overview`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
