@@ -21,22 +21,21 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     </div>
   );
 
-  if (user.isLoading) return spinner;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if (!isAuthenticated && !user.isLoading) {
       navigate('/log-in');
     } else if (
       isAuthenticated &&
-      user.data?.stores?.length !== undefined &&
+      user.data?.stores !== undefined &&
       user.data.stores.length === 0
     ) {
       navigate('/');
     }
   }, [isAuthenticated, user.isLoading, user.data, navigate]);
 
-  if (isAuthenticated && user.data?.stores?.length !== undefined && user.data?.stores?.length > 0) {
+  if (user.isLoading) return spinner;
+
+  if (isAuthenticated && user.data?.stores !== undefined && user.data?.stores?.length > 0) {
     return (
       <>
         <CreateStoreModal />

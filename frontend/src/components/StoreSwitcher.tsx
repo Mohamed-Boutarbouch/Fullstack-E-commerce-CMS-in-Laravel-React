@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, useState } from 'react';
 import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useStoreModal } from '@/hooks/store-modal';
-import { Store } from '@/services/userServices';
+import { Store } from '@/hooks/auth';
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
@@ -25,7 +25,6 @@ interface StoreSwitcherProps extends PopoverTriggerProps {
 
 export default function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
   const params = useParams();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const storeModal = useStoreModal();
 
@@ -38,7 +37,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
 
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
-    navigate(`/${store.value}/overview`);
+    window.location.assign(`/${store.value}/overview`);
   };
 
   return (
@@ -67,7 +66,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
                 <CommandItem
                   key={store.value}
                   onSelect={() => onStoreSelect(store)}
-                  className="text-sm"
+                  className="text-sm cursor-pointer"
                 >
                   <StoreIcon className="mr-2 h-4 w-4" />
                   {store.label}

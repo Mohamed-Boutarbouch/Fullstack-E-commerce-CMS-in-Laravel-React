@@ -1,7 +1,6 @@
-import * as z from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { Modal } from '@/components/ui/modal';
@@ -25,9 +24,6 @@ export default function CreateStoreModal() {
   const userId = user.data && user.data!.id;
 
   const storeMutation = useCreateStoreMutation();
-
-  const navigate = useNavigate();
-
   const storeModal = useStoreModal();
 
   const form = useForm<z.infer<typeof storeNameSchema>>({
@@ -43,14 +39,12 @@ export default function CreateStoreModal() {
     await storeMutation.mutateAsync(formData);
   }
 
-  // TODO: Fix the model component renders the second time when the store is created for the first time (due to redirection to the '/' index page). This happens when the user have no store created but and for users who has a selected store and reloads the page.
-  // Warning: React has detected a change in the order of Hooks called by ProtectedLayout. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks. ProtectedLayout.tsx: 27.
   useEffect(() => {
     if (storeMutation.isSuccess) {
-      navigate(`/${storeMutation.data.id}/overview`);
-      storeModal.onClose();
+      window.location.assign(`/${storeMutation.data.id}/overview`);
     }
-  }, [storeMutation.isSuccess, storeMutation.data, navigate, storeModal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storeMutation.isSuccess]);
 
   return (
     <Modal
@@ -82,7 +76,7 @@ export default function CreateStoreModal() {
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
                 <Button
-                  type="button"
+                  type="reset"
                   disabled={storeMutation.isLoading}
                   variant="outline"
                   onClick={storeModal.onClose}
