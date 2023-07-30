@@ -53,6 +53,7 @@ export default function NavigationBar({ className, ...props }: HTMLAttributes<HT
     <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)} {...props}>
       {routes.map((route) => (
         <NavLink
+          key={route.href}
           to={route.href}
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary aria-[current=page]:text-primary"
         >
