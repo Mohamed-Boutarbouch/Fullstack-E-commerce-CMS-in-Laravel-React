@@ -11,6 +11,12 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import LogIn from '@/pages/LogIn';
 import Register from '@/pages/Register';
 import Overview from '@/pages/Overview';
+import Billboards from '@/pages/Billboards';
+import Products from '@/pages/Products';
+import Categories from '@/pages/Categories';
+import Colors from '@/pages/Colors';
+import Sizes from '@/pages/Sizes';
+import Orders from '@/pages/Orders';
 import ThemeProvider from '@/context/ThemeProvider';
 import { ModalProvider } from '@/context/ModalContext';
 
@@ -33,6 +39,12 @@ export default function App() {
                 }
               >
                 <Route path=":storeId/overview" element={<Overview />} />
+                <Route path=":storeId/billboards" element={<Billboards />} />
+                <Route path=":storeId/categories" element={<Categories />} />
+                <Route path=":storeId/colors" element={<Colors />} />
+                <Route path=":storeId/sizes" element={<Sizes />} />
+                <Route path=":storeId/orders" element={<Orders />} />
+                <Route path=":storeId/products" element={<Products />} />
                 <Route path=":storeId/settings" element={<Settings />} />
               </Route>
 

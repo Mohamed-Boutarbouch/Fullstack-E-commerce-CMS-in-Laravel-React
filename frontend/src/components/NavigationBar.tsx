@@ -1,22 +1,64 @@
-import LogoutButton from '@/components/LogOutButton';
-import ThemeToggleButton from '@/components/ThemeToggleButton';
-import StoreSwitcher from '@/components/StoreSwitcher';
-import { useAuth } from '@/hooks/auth';
+import { HTMLAttributes, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useReadLocalStorage } from 'usehooks-ts';
 
-export default function NavigationBar() {
-  const { user } = useAuth({ middleware: 'auth' });
+import { cn } from '@/lib/utils';
+
+export default function NavigationBar({ className, ...props }: HTMLAttributes<HTMLElement>) {
+  const navigate = useNavigate();
+  const currentStoreId = useReadLocalStorage('currentStoreId');
+
+  useEffect(() => {
+    if (!currentStoreId) {
+      navigate('/');
+    }
+  }, [currentStoreId, navigate]);
+
+  const routes = [
+    {
+      href: `/${currentStoreId}/overview`,
+      label: 'Overview',
+    },
+    {
+      href: `/${currentStoreId}/billboards`,
+      label: 'Billboards',
+    },
+    {
+      href: `/${currentStoreId}/categories`,
+      label: 'Categories',
+    },
+    {
+      href: `/${currentStoreId}/sizes`,
+      label: 'Sizes',
+    },
+    {
+      href: `/${currentStoreId}/colors`,
+      label: 'Colors',
+    },
+    {
+      href: `/${currentStoreId}/products`,
+      label: 'Products',
+    },
+    {
+      href: `/${currentStoreId}/orders`,
+      label: 'Orders',
+    },
+    {
+      href: `/${currentStoreId}/settings`,
+      label: 'Settings',
+    },
+  ];
 
   return (
-    <header className="sticky top-0 z-40 w-full select-none border-b bg-background/80 saturate-200 backdrop-blur-sm">
-      <nav className="container flex items-center justify-between py-3">
-        <StoreSwitcher items={user.data?.stores} />
-
-        <div className="flex items-center gap-3 md:gap-4">
-          <LogoutButton />
-
-          <ThemeToggleButton />
-        </div>
-      </nav>
-    </header>
+    <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)} {...props}>
+      {routes.map((route) => (
+        <NavLink
+          to={route.href}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary aria-[current=page]:text-primary"
+        >
+          {route.label}
+        </NavLink>
+      ))}
+    </nav>
   );
 }
