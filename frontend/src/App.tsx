@@ -32,7 +32,6 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
-                {/* <Route index element={<Navigate replace to="overview" />} /> */}
                 <Route path=":storeId/overview" element={<Overview />} />
                 <Route path=":storeId/settings" element={<Settings />} />
               </Route>

@@ -49,7 +49,6 @@ export default function CreateStoreModal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeMutation.isSuccess]);
 
-  // TODO: Reset the form after closing the model.
   useEffect(() => {
     if (!storeModal.isOpen) {
       form.reset({ name: '' });
