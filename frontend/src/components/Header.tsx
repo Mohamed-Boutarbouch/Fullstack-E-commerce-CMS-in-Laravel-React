@@ -5,7 +5,7 @@ import UserAvatar from '@/components/UserAvatar';
 import { useAuth } from '@/hooks/auth';
 
 export default function Header() {
-  const { user, logout } = useAuth({ middleware: 'auth' });
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full select-none border-b bg-background/80 saturate-200 backdrop-blur-sm">

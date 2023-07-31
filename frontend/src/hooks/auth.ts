@@ -74,7 +74,7 @@ export interface ResendEmailVerificationParams {
   setStatus: Dispatch<SetStateAction<string | null>>;
 }
 
-export const useAuth = ({ middleware, redirectIfAuthenticated }: Params) => {
+export const useAuth = ({ middleware = 'auth', redirectIfAuthenticated }: Params = {}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();

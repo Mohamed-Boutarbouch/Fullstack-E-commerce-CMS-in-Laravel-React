@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/auth';
 
 export default function CreateStorePage() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth({});
+  const { user, isAuthenticated } = useAuth();
   const { isOpen, onOpen, onClose } = useStoreModal();
   const [currentStoreId, setCurrentStoreId] = useLocalStorage<string | undefined>(
     'currentStoreId',
@@ -18,35 +18,31 @@ export default function CreateStorePage() {
   const doesStoreIdExists = user.data?.stores?.some((store) => store.id === currentStoreId);
 
   useEffect(() => {
+    handleRedirect();
+    handleModalOpen();
+  }, [isOpen, currentStoreId, isAuthenticated, user.data?.stores, setCurrentStoreId]);
+
+  function handleRedirect() {
     if (doesStoreIdExists && !user.isLoading) {
       navigate(`${currentStoreId}/overview`);
       onClose();
-      return;
-    }
-    if (isAuthenticated && user.data?.stores && user.data.stores.length > 0 && !currentStoreId) {
+    } else if (
+      isAuthenticated &&
+      user.data?.stores &&
+      user.data.stores.length > 0 &&
+      !currentStoreId
+    ) {
       setCurrentStoreId(`/${user.data.stores[0].id}`);
-
-      console.log('Hello from CreateStorePage.tsx');
-
       navigate(`/${user.data.stores[0].id}/overview`);
       onClose();
-      return;
     }
+  }
+
+  function handleModalOpen() {
     if (!isOpen && !doesStoreIdExists) {
       onOpen();
     }
-  }, [
-    isOpen,
-    onOpen,
-    onClose,
-    currentStoreId,
-    navigate,
-    doesStoreIdExists,
-    isAuthenticated,
-    user.data?.stores,
-    setCurrentStoreId,
-    user.isLoading,
-  ]);
+  }
 
   return <CreateStoreModal />;
 }

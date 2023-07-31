@@ -11,7 +11,7 @@ interface ProtectedLayoutProps {
 }
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  const { isAuthenticated, user } = useAuth({});
+  const { isAuthenticated, user } = useAuth();
   const currentStoreId = useReadLocalStorage('currentStoreId');
   const navigate = useNavigate();
   const params = useParams();

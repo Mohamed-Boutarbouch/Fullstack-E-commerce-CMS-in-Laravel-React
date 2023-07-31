@@ -22,7 +22,7 @@ import { useAuth } from '@/hooks/auth';
 import { useCreateStoreMutation } from '@/hooks/create-store-mutation';
 
 export default function CreateStoreModal() {
-  const { user } = useAuth({ middleware: 'auth' });
+  const { user } = useAuth();
   const userId = user.data && user.data!.id;
 
   const navigate = useNavigate();
@@ -46,9 +46,6 @@ export default function CreateStoreModal() {
   useEffect(() => {
     if (storeMutation.isSuccess) {
       setCurrentStoreId(storeMutation.data.id);
-
-      console.log('Hello from CreateStoreModal.tsx');
-
       navigate(`/${storeMutation.data.id}/overview`);
       storeModal.onClose();
     }

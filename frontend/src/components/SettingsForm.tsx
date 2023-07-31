@@ -31,7 +31,7 @@ type Inputs = z.infer<typeof StoreNameSchema>;
 const origin: string = import.meta.env.VITE_LARAVEL_API_BASE_URL || '';
 
 export default function SettingsForm() {
-  const { user } = useAuth({});
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const { storeId } = useParams();
