@@ -1,7 +1,11 @@
+import SettingsForm from '@/components/SettingsForm';
+
 export default function Settings() {
   return (
-    <div className="">
-      <h1>Settings</h1>
+    <div className="flex-col">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <SettingsForm />
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { registerSchema } from '@/lib/validations/auth';
+import { RegisterSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,7 +18,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { useAuth } from '@/hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
-type Inputs = z.infer<typeof registerSchema>;
+type Inputs = z.infer<typeof RegisterSchema>;
 
 export function RegisterForm() {
   const { register } = useAuth({ middleware: 'guest', redirectIfAuthenticated: '/' });
@@ -26,7 +26,7 @@ export function RegisterForm() {
   const navigate = useNavigate();
 
   const form = useForm<Inputs>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       name: '',
       email: '',

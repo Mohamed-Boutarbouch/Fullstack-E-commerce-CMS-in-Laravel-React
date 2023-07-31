@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form';
 import { useStoreModal } from '@/hooks/store-modal';
 import { Button } from '@/components/ui/button';
-import { storeNameSchema } from '@/lib/validations/store';
+import { StoreNameSchema } from '@/lib/validations/store';
 import { useAuth } from '@/hooks/auth';
 import { useCreateStoreMutation } from '@/hooks/create-store-mutation';
 
@@ -30,14 +30,14 @@ export default function CreateStoreModal() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
 
-  const form = useForm<z.infer<typeof storeNameSchema>>({
-    resolver: zodResolver(storeNameSchema),
+  const form = useForm<z.infer<typeof StoreNameSchema>>({
+    resolver: zodResolver(StoreNameSchema),
     defaultValues: {
       name: '',
     },
   });
 
-  async function onSubmit(values: z.infer<typeof storeNameSchema>) {
+  async function onSubmit(values: z.infer<typeof StoreNameSchema>) {
     await storeMutation.mutateAsync({ ...values, userId });
   }
 

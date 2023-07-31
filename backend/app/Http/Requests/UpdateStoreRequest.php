@@ -23,14 +23,6 @@ class UpdateStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'uuid', 'exists:stores,id'],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'user_id' => $this->storeId,
-        ]);
     }
 }

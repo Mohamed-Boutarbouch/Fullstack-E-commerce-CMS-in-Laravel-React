@@ -29,8 +29,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const storeModal = useStoreModal();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
+  const [, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
 
   const formattedItems = items.map((item) => ({
     label: item.name,

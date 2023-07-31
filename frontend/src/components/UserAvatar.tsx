@@ -20,7 +20,7 @@ interface UserNavProps {
   logout: UseMutationResult<void, unknown, void, unknown>;
 }
 
-export default function UserNav({ username, email, logout }: UserNavProps) {
+export default function UserAvatar({ username, email, logout }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

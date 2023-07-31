@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { useReadLocalStorage } from 'usehooks-ts';
 
-import { logInSchema } from '@/lib/validations/auth';
+import { LogInSchema } from '@/lib/validations/auth';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -19,7 +19,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/auth';
 
-type Inputs = z.infer<typeof logInSchema>;
+type Inputs = z.infer<typeof LogInSchema>;
 
 export function LogInForm() {
   const currentStoreId = useReadLocalStorage('currentStoreId');
@@ -30,7 +30,7 @@ export function LogInForm() {
   });
 
   const form = useForm<Inputs>({
-    resolver: zodResolver(logInSchema),
+    resolver: zodResolver(LogInSchema),
     defaultValues: {
       email: '',
       password: '',

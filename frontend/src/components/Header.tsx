@@ -1,7 +1,7 @@
 import ThemeToggleButton from '@/components/ThemeToggleButton';
 import NavigationBar from '@/components/NavigationBar';
 import StoreSwitcher from '@/components/StoreSwitcher';
-import UserNav from '@/components/UserNav';
+import UserAvatar from '@/components/UserAvatar';
 import { useAuth } from '@/hooks/auth';
 
 export default function Header() {
@@ -14,7 +14,7 @@ export default function Header() {
         <NavigationBar className="mx-6" />
         <div className="flex items-center gap-3 md:gap-4">
           <ThemeToggleButton />
-          <UserNav username={user.data?.name} email={user.data?.email} logout={logout} />
+          <UserAvatar username={user.data?.name} email={user.data?.email} logout={logout} />
         </div>
       </div>
     </header>

@@ -54,8 +54,7 @@ class StoreController extends Controller
         $storeToUpdate->update($validatedData);
 
         return response()->json([
-            'message' => 'The store ' . $store->name . ' updated successfully',
-            'data' => new StoreResource($storeToUpdate)
+            'message' => 'The store updated successfully',
         ]);
     }
 

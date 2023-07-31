@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
   return $request->user()->load('stores');
+  // $user = $request->user()->load('stores');
+
+  // $sortedStores = $user->stores->sortByDesc('created_at')->values()->all();
+  // $user->stores = $sortedStores;
+
+  // return $user;
 });
 
 Route::apiResource('users', UserController::class);

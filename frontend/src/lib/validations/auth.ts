@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const logInSchema = z.object({
+export const LogInSchema = z.object({
   email: z.string().email({
     message: 'Please enter a valid email address',
   }),
@@ -13,7 +13,7 @@ export const logInSchema = z.object({
   remember: z.boolean(),
 });
 
-export const registerSchema = z
+export const RegisterSchema = z
   .object({
     name: z
       .string()
@@ -42,9 +42,9 @@ export const registerSchema = z
     path: ['password_confirmation'],
   });
 
-export type RegisterSchemaResult = z.infer<typeof registerSchema>;
+export type RegisterSchemaResult = z.infer<typeof RegisterSchema>;
 
-export const verifyEmailSchema = z.object({
+export const VerifyEmailSchema = z.object({
   code: z
     .string()
     .min(6, {
@@ -53,22 +53,22 @@ export const verifyEmailSchema = z.object({
     .max(6),
 });
 
-export const checkEmailSchema = z.object({
-  email: logInSchema.shape.email,
+export const CheckEmailSchema = z.object({
+  email: LogInSchema.shape.email,
 });
 
-export const resetPasswordSchema = z
+export const ResetPasswordSchema = z
   .object({
-    password: logInSchema.shape.password,
-    confirmPassword: logInSchema.shape.password,
-    code: verifyEmailSchema.shape.code,
+    password: LogInSchema.shape.password,
+    password_confirmation: LogInSchema.shape.password,
+    code: VerifyEmailSchema.shape.code,
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: 'Passwords do not match',
-    path: ['confirmPassword'],
+    path: ['password_confirmation'],
   });
 
-export const userPrivateMetadataSchema = z.object({
+export const UserPrivateMetadataSchema = z.object({
   role: z.enum(['user', 'admin']),
   stripePriceId: z.string().optional().nullable(),
   stripeSubscriptionId: z.string().optional().nullable(),
