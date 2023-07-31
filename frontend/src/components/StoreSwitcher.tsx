@@ -41,6 +41,9 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
     setCurrentStoreId(store.value);
+
+    console.log('Hello from StoreSwitcher.tsx');
+
     navigate(`/${store.value}/overview`);
   };
 

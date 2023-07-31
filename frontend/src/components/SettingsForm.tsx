@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { Trash } from 'lucide-react';
+import { useLocalStorage } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
 import { z } from 'zod';
 
 import {
@@ -22,18 +24,22 @@ import AlertModal from '@/components/AlertModal';
 import ApiAlert from '@/components/ApiAlert';
 import { StoreNameSchema } from '@/lib/validations/store';
 import { deleteStoreApi, updateStoreApi } from '@/services/storeServices';
-import { useReadLocalStorage } from 'usehooks-ts';
-import { toast } from 'react-hot-toast';
+import { useAuth } from '@/hooks/auth';
 
 type Inputs = z.infer<typeof StoreNameSchema>;
 
 const origin: string = import.meta.env.VITE_LARAVEL_API_BASE_URL || '';
 
 export default function SettingsForm() {
+  const { user } = useAuth({});
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
-  const currentStoreId = useReadLocalStorage('currentStoreId');
   const { storeId } = useParams();
+  const navigate = useNavigate();
+  const [currentStoreId, setCurrentStoreId] = useLocalStorage<string | undefined>(
+    'currentStoreId',
+    undefined,
+  );
 
   const form = useForm<Inputs>({
     resolver: zodResolver(StoreNameSchema),
@@ -70,8 +76,9 @@ export default function SettingsForm() {
   }
 
   useEffect(() => {
-    if (deleteStore.isSuccess) {
-      window.location.assign(`/${currentStoreId}/overview`);
+    if (deleteStore.isSuccess && user.data?.stores) {
+      setCurrentStoreId(user.data.stores[0].id);
+      navigate(`/${currentStoreId}/overview`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteStore.isSuccess]);

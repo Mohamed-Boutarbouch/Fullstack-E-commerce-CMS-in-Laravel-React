@@ -1,5 +1,7 @@
 import { AxiosResponse } from 'axios';
-import axiosClient from './axiosClient';
+
+import axiosClient from '@/services/axiosClient';
+import { fetchCsrfToken } from '@/services/csrfToken';
 
 interface DeleteStoreResponse {
   message: string;
@@ -7,6 +9,8 @@ interface DeleteStoreResponse {
 
 export async function deleteStoreApi(storeId: string): Promise<DeleteStoreResponse> {
   try {
+    await fetchCsrfToken();
+
     const { data }: AxiosResponse<DeleteStoreResponse> = await axiosClient.delete(
       `stores/${storeId}`,
     );
@@ -31,6 +35,8 @@ export async function updateStoreApi(store: {
   name: string;
 }): Promise<UpdateStoreResponse> {
   try {
+    await fetchCsrfToken();
+
     const { data }: AxiosResponse<UpdateStoreResponse> = await axiosClient.patch(
       `stores/${store.storeId}`,
       store,

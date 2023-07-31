@@ -18,13 +18,16 @@ export default function CreateStorePage() {
   const doesStoreIdExists = user.data?.stores?.some((store) => store.id === currentStoreId);
 
   useEffect(() => {
-    if (doesStoreIdExists) {
+    if (doesStoreIdExists && !user.isLoading) {
       navigate(`${currentStoreId}/overview`);
       onClose();
       return;
     }
     if (isAuthenticated && user.data?.stores && user.data.stores.length > 0 && !currentStoreId) {
       setCurrentStoreId(`/${user.data.stores[0].id}`);
+
+      console.log('Hello from CreateStorePage.tsx');
+
       navigate(`/${user.data.stores[0].id}/overview`);
       onClose();
       return;
@@ -42,6 +45,7 @@ export default function CreateStorePage() {
     isAuthenticated,
     user.data?.stores,
     setCurrentStoreId,
+    user.isLoading,
   ]);
 
   return <CreateStoreModal />;
