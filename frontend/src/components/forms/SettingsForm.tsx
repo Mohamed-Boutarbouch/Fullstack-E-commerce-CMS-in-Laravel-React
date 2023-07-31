@@ -71,6 +71,7 @@ export default function SettingsForm() {
 
   async function onSubmit(data: Inputs) {
     await updateStore.mutateAsync({ ...data, storeId });
+    form.reset();
   }
 
   useEffect(() => {
