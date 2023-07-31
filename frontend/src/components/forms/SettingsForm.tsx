@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import PageHeading from '@/components/PageHeading';
-import AlertModal from '@/components/AlertModal';
+import AlertModal from '@/components/models/AlertModal';
 import ApiAlert from '@/components/ApiAlert';
 import { StoreNameSchema } from '@/lib/validations/store';
 import { deleteStoreApi, updateStoreApi } from '@/services/storeServices';
@@ -48,7 +48,6 @@ export default function SettingsForm() {
     },
   });
 
-  // TODO: Fix store switcher selection after store deletion
   const deleteStore = useMutation<{ message: string }, unknown, { storeId: string }>({
     mutationFn: async (values) => {
       return await deleteStoreApi(values.storeId);
@@ -71,7 +70,6 @@ export default function SettingsForm() {
   });
 
   async function onSubmit(data: Inputs) {
-    console.log({ ...data, storeId });
     await updateStore.mutateAsync({ ...data, storeId });
   }
 
@@ -110,16 +108,13 @@ export default function SettingsForm() {
               <FormItem>
                 <FormLabel>Store Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} disabled={updateStore.isLoading} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button
-            className="w-fit"
-            // disabled={login.isLoading}
-          >
+          <Button className="w-fit" disabled={updateStore.isLoading}>
             Save Changes
             <span className="sr-only">Save Changes</span>
           </Button>

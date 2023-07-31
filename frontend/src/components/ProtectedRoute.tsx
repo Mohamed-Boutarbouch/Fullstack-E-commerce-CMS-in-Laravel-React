@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/auth';
 import { Icons } from '@/components/ui/icons';
-import CreateStoreModal from '@/components/CreateStoreModel';
+import CreateStoreModal from '@/components/models/CreateStoreModel';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 interface ProtectedLayoutProps {

@@ -41,9 +41,6 @@ export async function updateStoreApi(store: {
       `stores/${store.storeId}`,
       store,
     );
-
-    console.log(data);
-
     return data;
   } catch (error) {
     console.log(error);

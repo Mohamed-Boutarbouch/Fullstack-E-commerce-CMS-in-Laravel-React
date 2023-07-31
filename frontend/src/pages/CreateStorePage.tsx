@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useLocalStorage } from 'usehooks-ts';
 
-import CreateStoreModal from '@/components/CreateStoreModel';
+import CreateStoreModal from '@/components/models/CreateStoreModel';
 import { useStoreModal } from '@/hooks/store-modal';
 import { useAuth } from '@/hooks/auth';
 

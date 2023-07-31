@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Shell } from '@/components/Shell';
-import { LogInForm } from '@/components/LogInForm';
+import { LogInForm } from '@/components/forms/LogInForm';
 import { OAuthLogIn } from '@/components/0AuthLogIn';
 
 export default function LogIn() {

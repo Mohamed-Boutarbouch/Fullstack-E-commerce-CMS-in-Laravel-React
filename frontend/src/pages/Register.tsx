@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { RegisterForm } from '@/components/RegisterForm';
+import { RegisterForm } from '@/components/forms/RegisterForm';
 import { Shell } from '@/components/Shell';
 import { OAuthLogIn } from '@/components/0AuthLogIn';
 
