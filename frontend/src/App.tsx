@@ -11,7 +11,9 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import LogIn from '@/pages/LogIn';
 import Register from '@/pages/Register';
 import Overview from '@/pages/Overview';
-import Billboards from '@/pages/Billboards';
+import Billboards from '@/pages/Billboards/Billboards';
+import Billboard from '@/pages/Billboards/Billboard';
+import NewBillboard from '@/pages/Billboards/NewBillboard';
 import Products from '@/pages/Products';
 import Categories from '@/pages/Categories';
 import Colors from '@/pages/Colors';
@@ -19,6 +21,7 @@ import Sizes from '@/pages/Sizes';
 import Orders from '@/pages/Orders';
 import ThemeProvider from '@/context/ThemeProvider';
 import { ModalProvider } from '@/context/ModalContext';
+import BillboardHeader from './components/PageHeaders/BillboardHeader';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +41,11 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
+                <Route path=":storeId/billboards" element={<BillboardHeader />}>
+                  <Route index element={<Billboards />} />
+                  <Route path="new" element={<NewBillboard />} />
+                  <Route path=":billboardId" element={<Billboard />} />
+                </Route>
                 <Route path=":storeId/overview" element={<Overview />} />
                 <Route path=":storeId/billboards" element={<Billboards />} />
                 <Route path=":storeId/categories" element={<Categories />} />

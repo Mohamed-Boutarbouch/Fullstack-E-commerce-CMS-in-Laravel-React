@@ -5,7 +5,6 @@ import { useLocalStorage } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Trash } from 'lucide-react';
 import { z } from 'zod';
 
 import {
@@ -19,12 +18,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
-import PageHeading from '@/components/PageHeading';
 import AlertModal from '@/components/models/AlertModal';
 import ApiAlert from '@/components/ApiAlert';
 import { StoreNameSchema } from '@/lib/validations/store';
 import { deleteStoreApi, updateStoreApi } from '@/services/storeServices';
 import { useAuth } from '@/hooks/auth';
+import SettingsHeader from '../PageHeaders/SettingsHeader';
 
 type Inputs = z.infer<typeof StoreNameSchema>;
 
@@ -90,13 +89,7 @@ export default function SettingsForm() {
         onConfirm={() => storeId && deleteStore.mutate({ storeId })}
         loading={deleteStore.isLoading}
       />
-      <div className="flex items-center justify-between">
-        <PageHeading title="Settings" description="Mange store preferences" />
-        <Button variant="destructive" size="icon" onClick={() => setOpen(true)}>
-          <Trash className="w-4 h-4" />
-        </Button>
-      </div>
-      <Separator />
+      <SettingsHeader setOpen={setOpen} />
       <Form {...form}>
         <form
           className="grid gap-4 max-w-md"

@@ -56,7 +56,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
           className={cn('w-[200px] justify-between', className)}
         >
           <StoreIcon className="mr-2 h-4 w-4" />
-          {currentStore?.label}
+          <span className="whitespace-nowrap">{currentStore?.label}</span>
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
