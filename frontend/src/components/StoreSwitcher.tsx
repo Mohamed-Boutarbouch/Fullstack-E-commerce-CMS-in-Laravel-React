@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useStoreModal } from '@/hooks/store-modal';
-import { Store, useStoreApi } from '@/hooks/store-api';
+import { useStoreApi } from '@/hooks/store-api';
+import { Store } from '@/services/storeServices';
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
