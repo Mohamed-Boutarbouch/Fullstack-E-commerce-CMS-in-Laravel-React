@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState } from 'react';
+import { ComponentPropsWithoutRef, useEffect, useState } from 'react';
 import { Check, ChevronsUpDown, PlusCircle, Store as StoreIcon } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useStoreModal } from '@/hooks/store-modal';
-import { Store } from '@/hooks/auth';
+import { Store, useStoreApi } from '@/hooks/store-api';
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>;
 
@@ -24,25 +24,37 @@ interface StoreSwitcherProps extends PopoverTriggerProps {
   items?: Store[];
 }
 
+interface CurrentStoreProps {
+  label: StoreSwitcherProps['name'];
+  value: StoreSwitcherProps['id'];
+}
+
 export default function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
   const params = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const storeModal = useStoreModal();
+  const { doesStoreIdExists } = useStoreApi();
+  const [currentStore, setCurrentStore] = useState<CurrentStoreProps>();
   const [, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
+  const storeModal = useStoreModal();
 
   const formattedItems = items.map((item) => ({
     label: item.name,
     value: item.id,
   }));
 
-  const currentStore = formattedItems.find((item) => item.value === params.storeId);
-
   const onStoreSelect = (store: { value: string; label: string }) => {
     setOpen(false);
+    setCurrentStore(store);
     setCurrentStoreId(store.value);
     navigate(`/${store.value}/overview`);
   };
+
+  useEffect(() => {
+    if (doesStoreIdExists) {
+      setCurrentStore(formattedItems.find((item) => item.value === params.storeId));
+    }
+  }, [items]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

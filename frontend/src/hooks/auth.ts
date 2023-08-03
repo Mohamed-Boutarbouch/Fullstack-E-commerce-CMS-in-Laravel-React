@@ -6,14 +6,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '@/services/axiosClient';
 import { fetchCsrfToken } from '@/services/csrfToken';
 
-export interface Store {
-  createdAt: string;
-  id: string;
-  name: string;
-  updatedAt: string;
-  userId: string;
-}
-
 export interface User {
   id: string;
   name: string;
@@ -21,7 +13,6 @@ export interface User {
   email_verified_at: string | null;
   created_at: string;
   updated_at: string;
-  stores?: Store[];
 }
 
 interface ErrorQueryResponse {

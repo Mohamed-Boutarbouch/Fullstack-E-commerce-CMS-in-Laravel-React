@@ -49,16 +49,13 @@ class StoreController extends Controller
      */
     public function update(UpdateStoreRequest $request, Store $store)
     {
-        // TODO: Needs testing
         $validatedData = $request->validated();
 
         $storeToUpdate = Store::findOrFail($store->id);
 
         $storeToUpdate->update($validatedData);
 
-        return response()->json([
-            'message' => 'The store updated successfully',
-        ]);
+        return response()->noContent();
     }
 
     /**

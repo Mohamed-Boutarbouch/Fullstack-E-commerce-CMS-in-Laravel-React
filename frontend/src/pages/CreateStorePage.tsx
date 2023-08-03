@@ -5,7 +5,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import CreateStoreModal from '@/components/models/CreateStoreModel';
 import { useStoreModal } from '@/hooks/store-modal';
 import { useAuth } from '@/hooks/auth';
-import useStoreApi from '@/hooks/store-api';
+import { useStoreApi } from '@/hooks/store-api';
 
 export default function CreateStorePage() {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import { useReadLocalStorage } from 'usehooks-ts';
 import { useAuth } from '@/hooks/auth';
 import { Icons } from '@/components/ui/icons';
 import CreateStoreModal from '@/components/models/CreateStoreModel';
-import useStoreApi from '@/hooks/store-api';
+import { useStoreApi } from '@/hooks/store-api';
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -13,7 +13,7 @@ interface ProtectedLayoutProps {
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const { isAuthenticated, user } = useAuth();
-  const { storesQuery, doesStoreIdExists } = useStoreApi();
+  const { storesQuery, createStore, doesStoreIdExists } = useStoreApi();
   const currentStoreId = useReadLocalStorage('currentStoreId');
   const navigate = useNavigate();
 
@@ -49,9 +49,9 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     doesStoreIdExists,
   ]);
 
-  if (user.isLoading) return spinner;
+  if (user.isLoading || storesQuery.isLoading || createStore.isLoading) return spinner;
 
-  if (isAuthenticated && user.data?.stores !== undefined && user.data?.stores?.length > 0) {
+  if (isAuthenticated && storesQuery.isSuccess && storesQuery.data?.length > 0) {
     return (
       <>
         <CreateStoreModal />

@@ -19,15 +19,16 @@ import { useStoreModal } from '@/hooks/store-modal';
 import { Button } from '@/components/ui/button';
 import { StoreNameSchema } from '@/lib/validations/store';
 import { useAuth } from '@/hooks/auth';
-import { useCreateStoreMutation } from '@/hooks/create-store-mutation';
+import { useStoreApi } from '@/hooks/store-api';
 
 export default function CreateStoreModal() {
   const { user } = useAuth();
   const userId = user.data && user.data!.id;
 
+  const { createStore } = useStoreApi();
+
   const navigate = useNavigate();
 
-  const storeMutation = useCreateStoreMutation();
   const storeModal = useStoreModal();
 
   const [, setCurrentStoreId] = useLocalStorage<string | undefined>('currentStoreId', undefined);
@@ -40,17 +41,16 @@ export default function CreateStoreModal() {
   });
 
   async function onSubmit(values: z.infer<typeof StoreNameSchema>) {
-    await storeMutation.mutateAsync({ ...values, userId });
+    await createStore.mutateAsync({ ...values, userId });
   }
 
   useEffect(() => {
-    if (storeMutation.isSuccess) {
-      setCurrentStoreId(storeMutation.data.id);
-      navigate(`/${storeMutation.data.id}/overview`);
+    if (createStore.isSuccess) {
+      setCurrentStoreId(createStore.data.id);
+      navigate(`/${createStore.data.id}/overview`);
       storeModal.onClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeMutation.isSuccess]);
+  }, [createStore.isSuccess]);
 
   useEffect(() => {
     if (!storeModal.isOpen) {
@@ -76,11 +76,7 @@ export default function CreateStoreModal() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={storeMutation.isLoading}
-                        placeholder="E-Commerce"
-                        {...field}
-                      />
+                      <Input disabled={createStore.isLoading} placeholder="E-Commerce" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -89,13 +85,13 @@ export default function CreateStoreModal() {
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
                 <Button
                   type="reset"
-                  disabled={storeMutation.isLoading}
+                  disabled={createStore.isLoading}
                   variant="outline"
                   onClick={storeModal.onClose}
                 >
                   Cancel
                 </Button>
-                <Button disabled={storeMutation.isLoading} type="submit">
+                <Button disabled={createStore.isLoading} type="submit">
                   Continue
                 </Button>
               </div>

@@ -3,7 +3,7 @@ import NavigationBar from '@/components/NavigationBar';
 import StoreSwitcher from '@/components/StoreSwitcher';
 import UserAvatar from '@/components/UserAvatar';
 import { useAuth } from '@/hooks/auth';
-import useStoreApi from '@/hooks/store-api';
+import { useStoreApi } from '@/hooks/store-api';
 
 export default function Header() {
   const { user, logout } = useAuth();
