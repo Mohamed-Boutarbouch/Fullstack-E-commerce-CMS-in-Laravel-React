@@ -7,38 +7,43 @@ use App\Http\Requests\UpdateBillboardRequest;
 use App\Http\Resources\BillboardCollection;
 use App\Http\Resources\BillboardResource;
 use App\Models\Billboard;
+use App\Models\Store;
+use Illuminate\Http\Request;
 
 class BillboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new BillboardCollection(Billboard::all());
+        $storeId = $request->query('store-id');
+        $store = Store::findOrFail($storeId);
+        return new BillboardCollection($store->billboards);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBillboardRequest $request)
+    public function store(Request $request)
     {
-        $validatedData = $request->validated();
+        dd($request);
+        // $validatedData = $request->validated();
 
-        $billboard = null;
+        // $billboard = null;
 
-        if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-            $path = $imageFile->store('/images/resource', ['disk' => 'my_files']);
+        // if ($request->hasFile('image')) {
+        //     $imageFile = $request->file('image');
+        //     $path = $imageFile->store('/images/resource', ['disk' => 'my_files']);
 
-            $billboard = Billboard::create([
-                'label' => $validatedData['label'],
-                'store_id' => $validatedData['store_id'],
-                'img_url' => url()->to('/') . '/' . $path,
-            ]);
-        }
+        //     $billboard = Billboard::create([
+        //         'label' => $validatedData['label'],
+        //         'store_id' => $validatedData['store_id'],
+        //         'img_url' => url()->to('/') . '/' . $path,
+        //     ]);
+        // }
 
-        return response()->json(['data' => new BillboardResource($billboard)]);
+        // return new BillboardResource($billboard);
     }
 
     /**

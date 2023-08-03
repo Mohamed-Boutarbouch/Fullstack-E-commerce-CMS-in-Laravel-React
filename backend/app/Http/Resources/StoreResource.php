@@ -20,6 +20,7 @@ class StoreResource extends JsonResource
             'userId' => $this->user_id,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'products' => ProductResource::collection($this->whenLoaded('products'))
         ];
     }
 }

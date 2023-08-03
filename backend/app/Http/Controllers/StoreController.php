@@ -6,8 +6,10 @@ use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Http\Resources\StoreCollection;
 use App\Http\Resources\StoreResource;
+use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -38,7 +40,8 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        return new StoreResource($store);
+        return $store->load('products', 'sizes', 'colors', 'billboards', 'orders');
+        // return new StoreResource($store);
     }
 
     /**
