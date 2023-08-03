@@ -12,12 +12,10 @@ class StoreCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return [
-            'data' => $this->collection->map(function ($store) {
-                return new StoreResource($store);
-            }),
-        ];
+        return $this->collection->map(function ($store) {
+            return new StoreResource($store);
+        });
     }
 }

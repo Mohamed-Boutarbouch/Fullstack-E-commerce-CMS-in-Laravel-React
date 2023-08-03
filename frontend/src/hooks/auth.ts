@@ -99,7 +99,7 @@ export const useAuth = ({ middleware = 'auth', redirectIfAuthenticated }: Params
     retry: false,
   });
 
-  const isAuthenticated = !!user?.data;
+  const isAuthenticated = user.isSuccess && !!user.data;
 
   const register = useMutation<void, ErrorMutation, RegisterParams>({
     mutationFn: async (props) => {

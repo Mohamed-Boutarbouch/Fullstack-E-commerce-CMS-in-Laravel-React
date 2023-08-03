@@ -22,15 +22,15 @@ import AlertModal from '@/components/models/AlertModal';
 import ApiAlert from '@/components/ApiAlert';
 import { StoreNameSchema } from '@/lib/validations/store';
 import { deleteStoreApi, updateStoreApi } from '@/services/storeServices';
-import { useAuth } from '@/hooks/auth';
-import SettingsHeader from '../PageHeaders/SettingsHeader';
+import SettingsHeader from '@/components/PageHeaders/SettingsHeader';
+import useStoreApi from '@/hooks/store-api';
 
 type Inputs = z.infer<typeof StoreNameSchema>;
 
 const origin: string = import.meta.env.VITE_LARAVEL_API_BASE_URL || '';
 
 export default function SettingsForm() {
-  const { user } = useAuth();
+  const { storesQuery } = useStoreApi();
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const { storeId } = useParams();
@@ -74,8 +74,8 @@ export default function SettingsForm() {
   }
 
   useEffect(() => {
-    if (deleteStore.isSuccess && user.data?.stores) {
-      setCurrentStoreId(user.data.stores[0].id);
+    if (deleteStore.isSuccess && storesQuery.data) {
+      setCurrentStoreId(storesQuery.data[0].id);
       navigate(`/${currentStoreId}/overview`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

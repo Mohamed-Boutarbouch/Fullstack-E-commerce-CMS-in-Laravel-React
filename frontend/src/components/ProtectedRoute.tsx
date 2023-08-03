@@ -1,10 +1,11 @@
 import { ReactNode, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useReadLocalStorage } from 'usehooks-ts';
 
 import { useAuth } from '@/hooks/auth';
 import { Icons } from '@/components/ui/icons';
 import CreateStoreModal from '@/components/models/CreateStoreModel';
-import { useReadLocalStorage } from 'usehooks-ts';
+import useStoreApi from '@/hooks/store-api';
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -12,9 +13,9 @@ interface ProtectedLayoutProps {
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const { isAuthenticated, user } = useAuth();
+  const { storesQuery, doesStoreIdExists } = useStoreApi();
   const currentStoreId = useReadLocalStorage('currentStoreId');
   const navigate = useNavigate();
-  const params = useParams();
 
   const spinner = (
     <div className="flex justify-center">
@@ -24,27 +25,29 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     </div>
   );
 
-  const doesStoreIdExists = user.data?.stores?.some((store) => store.id === params.storeId);
-
   useEffect(() => {
     if (!isAuthenticated && !user.isLoading) {
       navigate('/log-in');
     } else if (
       isAuthenticated &&
-      user.data?.stores !== undefined &&
-      currentStoreId !== undefined &&
-      user.data.stores.length > 0 &&
+      storesQuery.data &&
+      currentStoreId &&
+      storesQuery.data.length > 0 &&
       !doesStoreIdExists
     ) {
       navigate(`/${currentStoreId}/overview`);
-    } else if (
-      isAuthenticated &&
-      user.data?.stores !== undefined &&
-      user.data.stores.length === 0
-    ) {
+    } else if (isAuthenticated && storesQuery.isSuccess && storesQuery.data.length === 0) {
       navigate('/');
     }
-  }, [isAuthenticated, user.isLoading, user.data, navigate, currentStoreId, doesStoreIdExists]);
+  }, [
+    isAuthenticated,
+    user.isLoading,
+    storesQuery.data,
+    storesQuery.isSuccess,
+    navigate,
+    currentStoreId,
+    doesStoreIdExists,
+  ]);
 
   if (user.isLoading) return spinner;
 

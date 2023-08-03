@@ -6,7 +6,6 @@ use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Http\Resources\StoreCollection;
 use App\Http\Resources\StoreResource;
-use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,10 +15,11 @@ class StoreController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return StoreResource::collection(Store::all());
-        // return new StoreCollection(Store::all());
+        $userId = $request->query('user-id');
+        $user = User::findOrFail($userId);
+        return new StoreCollection($user->stores);
     }
 
     /**
