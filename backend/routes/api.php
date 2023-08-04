@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+  // TODO: Do not load relationships here
   return $request->user()->load('stores');
   // $user = $request->user()->load('stores');
 

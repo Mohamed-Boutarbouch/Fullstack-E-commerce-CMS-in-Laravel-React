@@ -17,7 +17,7 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
-        $userId = $request->query('user-id');
+        $userId = $request->query('userId');
         $user = User::findOrFail($userId);
         return new StoreCollection($user->stores);
     }

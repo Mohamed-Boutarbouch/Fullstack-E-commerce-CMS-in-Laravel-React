@@ -17,7 +17,7 @@ class BillboardController extends Controller
      */
     public function index(Request $request)
     {
-        $storeId = $request->query('store-id');
+        $storeId = $request->query('storeId');
         $store = Store::findOrFail($storeId);
         return new BillboardCollection($store->billboards);
     }

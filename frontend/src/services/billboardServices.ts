@@ -14,7 +14,9 @@ interface BillboardResponseData {
 
 export async function getBillboards(storeId: string): Promise<BillboardResponseData[]> {
   try {
-    const { data } = await axiosClient<BillboardResponseData[]>(`/billboards?store-id=${storeId}`);
+    const { data } = await axiosClient<BillboardResponseData[]>('/billboards', {
+      params: { storeId },
+    });
     return data;
   } catch (error) {
     throw error;

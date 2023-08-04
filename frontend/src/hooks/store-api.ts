@@ -33,8 +33,8 @@ export function useStoreApi() {
     mutationFn: async (values) => {
       return await createStoreApi(values);
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['stores'] });
+    onSuccess: (data, values) => {
+      queryClient.invalidateQueries({ queryKey: ['stores', values.userId] });
       toast.success(`The store ${data.name} created successfully`);
     },
   });
@@ -45,7 +45,7 @@ export function useStoreApi() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['stores'] });
-      toast.success(`The store name updated successfully`);
+      toast.success('The store name updated successfully');
     },
   });
 
@@ -55,7 +55,7 @@ export function useStoreApi() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['stores'] });
-      toast.success(`The store deleted successfully`);
+      toast.success('The store deleted successfully');
     },
   });
 

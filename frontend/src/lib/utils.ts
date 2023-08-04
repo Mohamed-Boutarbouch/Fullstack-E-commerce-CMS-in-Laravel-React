@@ -5,10 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getCurrentRouteNested(
-  pathname: string,
-  subPath: 'billboards' | 'categories' | 'colors' | 'sizes' | 'orders' | 'products',
-): string | undefined {
+type SubPathProps = 'billboards' | 'categories' | 'colors' | 'sizes' | 'orders' | 'products';
+
+export function getCurrentRouteNested(pathname: string, subPath: SubPathProps): string | undefined {
   const pathnameArr = pathname.split('/');
   const index = pathnameArr.indexOf(subPath);
 

@@ -26,7 +26,7 @@ export interface UpdateStoreParams {
 
 export async function getStoresApi(userId: string | undefined) {
   try {
-    const { data } = await axiosClient<Store[]>(`/stores?user-id=${userId}`);
+    const { data } = await axiosClient<Store[]>('/stores', { params: { userId } });
     return data;
   } catch (error) {
     throw error;
