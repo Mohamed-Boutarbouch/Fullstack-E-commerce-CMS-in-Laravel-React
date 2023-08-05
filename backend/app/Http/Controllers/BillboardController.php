@@ -25,25 +25,25 @@ class BillboardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBillboardRequest $request)
     {
-        dd($request);
-        // $validatedData = $request->validated();
+        // dd($request);
+        $validatedData = $request->validated();
 
-        // $billboard = null;
+        $billboard = null;
 
-        // if ($request->hasFile('image')) {
-        //     $imageFile = $request->file('image');
-        //     $path = $imageFile->store('/images/resource', ['disk' => 'my_files']);
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $path = $imageFile->store('/images/resource', ['disk' => 'my_files']);
 
-        //     $billboard = Billboard::create([
-        //         'label' => $validatedData['label'],
-        //         'store_id' => $validatedData['store_id'],
-        //         'img_url' => url()->to('/') . '/' . $path,
-        //     ]);
-        // }
+            $billboard = Billboard::create([
+                'label' => $validatedData['label'],
+                'store_id' => $validatedData['store_id'],
+                'img_url' => url()->to('/') . '/' . $path,
+            ]);
+        }
 
-        // return new BillboardResource($billboard);
+        return new BillboardResource($billboard);
     }
 
     /**
@@ -73,7 +73,7 @@ class BillboardController extends Controller
             $billboard->update(['img_url' => url()->to('/') . '/' . $path]);
         }
 
-        return response()->json(['data' => new BillboardResource($billboard)]);
+        return new BillboardResource($billboard);
     }
 
     /**

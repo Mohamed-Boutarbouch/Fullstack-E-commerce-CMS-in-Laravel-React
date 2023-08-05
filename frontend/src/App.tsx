@@ -12,7 +12,7 @@ import LogIn from '@/pages/LogIn';
 import Register from '@/pages/Register';
 import Overview from '@/pages/Overview';
 import Billboards from '@/pages/Billboards/Billboards';
-import Billboard from '@/pages/Billboards/Billboard';
+import EditBillboard from '@/pages/Billboards/EditBillboard';
 import NewBillboard from '@/pages/Billboards/NewBillboard';
 import Products from '@/pages/Products';
 import Categories from '@/pages/Categories';
@@ -47,7 +47,7 @@ export default function App() {
                 <Route path=":storeId/billboards" element={<BillboardHeader />}>
                   <Route index element={<Billboards />} />
                   <Route path="new" element={<NewBillboard />} />
-                  <Route path=":billboardId" element={<Billboard />} />
+                  <Route path=":billboardId" element={<EditBillboard />} />
                 </Route>
 
                 <Route path=":storeId/colors" element={<ColorHeader />}>

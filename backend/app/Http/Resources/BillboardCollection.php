@@ -12,12 +12,10 @@ class BillboardCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return [
-            'data' => $this->collection->map(function ($billboard) {
-                return new BillboardResource($billboard);
-            }),
-        ];
+        return $this->collection->map(function ($billboard) {
+            return new BillboardResource($billboard);
+        });
     }
 }

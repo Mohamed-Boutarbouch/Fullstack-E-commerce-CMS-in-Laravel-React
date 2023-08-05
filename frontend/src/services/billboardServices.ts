@@ -1,9 +1,10 @@
-import axiosClient from '@/services/axiosClient';
-import { fetchCsrfToken } from './csrfToken';
 import { AxiosResponse } from 'axios';
-import { toast } from 'react-hot-toast';
 
-interface BillboardResponseData {
+import axiosClient from '@/services/axiosClient';
+import { fetchCsrfToken } from '@/services/csrfToken';
+import fileClient from '@/services/fileClient';
+
+export interface Billboard {
   id: string;
   label: string;
   imgUrl: string;
@@ -12,9 +13,9 @@ interface BillboardResponseData {
   updatedAt: string;
 }
 
-export async function getBillboards(storeId: string): Promise<BillboardResponseData[]> {
+export async function getBillboardsApi(storeId: string): Promise<Billboard[]> {
   try {
-    const { data } = await axiosClient<BillboardResponseData[]>('/billboards', {
+    const { data } = await axiosClient<Billboard[]>('/billboards', {
       params: { storeId },
     });
     return data;
@@ -23,23 +24,25 @@ export async function getBillboards(storeId: string): Promise<BillboardResponseD
   }
 }
 
-interface CreateBillboardProps {
-  // image: File;
-  image?: any;
+// TODO: Account for billboardId empty string use case
+export async function getBillboardApi(billboardId: string): Promise<Billboard> {
+  try {
+    const { data } = await axiosClient<Billboard>(`/billboards/${billboardId}`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export interface CreateBillboardParams {
   label: string;
+  image: File;
   storeId: string | undefined;
 }
 
-export async function createBillboardApi(
-  values: CreateBillboardProps,
-): Promise<BillboardResponseData> {
+export async function createBillboardApi(values: CreateBillboardParams): Promise<Billboard> {
   await fetchCsrfToken();
 
-  const { data }: AxiosResponse<BillboardResponseData> = await axiosClient.post(
-    '/billboards',
-    values,
-  );
-
-  toast.success('The billboard created successfully');
+  const { data }: AxiosResponse<Billboard> = await fileClient.post('/billboards', values);
   return data;
 }

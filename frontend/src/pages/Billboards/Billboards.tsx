@@ -1,19 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { useReadLocalStorage } from 'usehooks-ts';
 // import { format } from "date-fns";
 
-import { getBillboards } from '@/services/billboardServices';
+import { Link } from 'react-router-dom';
+import { useBillboardApi } from '@/hooks/billboard-api';
 
 export default function Billboards() {
-  const currentStoreId: string = useReadLocalStorage('currentStoreId') as string;
-
-  // const billboards =
-  useQuery({
-    queryKey: ['billboards', currentStoreId],
-    queryFn: () => getBillboards(currentStoreId),
-  });
-
-  // billboards.isLoading && console.log(billboards.data);
+  const { billboardsQuery } = useBillboardApi();
 
   // const formattedBillboards: BillboardColumn[] = billboards.map((item) => ({
   //   id: item.id,
@@ -22,8 +13,14 @@ export default function Billboards() {
   // }));
 
   return (
-    <div className="">
-      <p>gg</p>
+    <div>
+      <ul>
+        {billboardsQuery.data?.map((billboard) => (
+          <li key={billboard.id}>
+            <Link to={billboard.id}>{billboard.label}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

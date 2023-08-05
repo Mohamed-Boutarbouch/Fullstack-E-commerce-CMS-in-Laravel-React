@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, useParams } from 'react-router-dom';
 
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,23 +12,23 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { CreateBillboardSchema, CreateInputs } from '@/lib/validations/billboard';
+import { UpdateBillboardSchema, UpdateInputs } from '@/lib/validations/billboard';
 import ImageUploadButton from '@/components/ImageUploadButton';
 import { Trash } from 'lucide-react';
 import { useBillboardApi } from '@/hooks/billboard-api';
-import { cn } from '@/lib/utils';
 
-export default function NewBillboard() {
-  const { createBillboard } = useBillboardApi();
-  const navigate = useNavigate();
-  const { storeId } = useParams();
+export default function EditBillboard() {
+  const { billboardQuery } = useBillboardApi();
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    billboardQuery.data?.imgUrl || null,
+  );
 
-  const form = useForm<CreateInputs>({
-    resolver: zodResolver(CreateBillboardSchema),
-    defaultValues: { label: '', image: undefined },
+  console.log(billboardQuery.data);
+
+  const form = useForm<UpdateInputs>({
+    resolver: zodResolver(UpdateBillboardSchema),
+    defaultValues: { label: billboardQuery.data?.label, image: billboardQuery.data?.imgUrl },
   });
 
   useEffect(() => {
@@ -37,16 +37,20 @@ export default function NewBillboard() {
     };
   }, [imagePreview]);
 
+  const onSubmitHandler = async (data: UpdateInputs) => {
+    console.log(data);
+
+    // update billboard
+    // console.log({ id: billboard!.id, ...data, image: imageUrl });
+
+    form.reset();
+
+    setImagePreview(billboardQuery.data?.imgUrl || null);
+  };
+
   function deletePreview() {
     setImagePreview(null);
     form.reset({ image: undefined });
-  }
-
-  async function onSubmitHandler(data: CreateInputs) {
-    await createBillboard.mutateAsync({ ...data, storeId });
-    form.reset();
-    setImagePreview(null);
-    navigate('../');
   }
 
   return (
@@ -66,17 +70,13 @@ export default function NewBillboard() {
                   <img
                     src={imagePreview}
                     alt="preview"
-                    className={cn(
-                      'w-64 h-64 object-cover rounded-md',
-                      createBillboard.isLoading ? 'mix-blend-luminosity' : '',
-                    )}
+                    className="w-64 h-64 object-cover rounded-md"
                   />
                   <Button
                     className="absolute top-2 left-2"
                     variant="destructive"
                     size="icon"
                     type="button"
-                    disabled={createBillboard.isLoading}
                     onClick={deletePreview}
                   >
                     <Trash className="w-4 h-4" />
@@ -84,14 +84,25 @@ export default function NewBillboard() {
                 </div>
               )}
               <FormControl>
-                {/*TODO: ImageUploadButton not working after touching the label field first or after cancelling image upload modal*/}
                 <ImageUploadButton
                   name={name}
                   onBlur={onBlur}
                   onChange={onChange}
-                  disabled={createBillboard.isLoading}
+                  disabled={billboardQuery.isLoading}
                   setImagePreview={setImagePreview}
                 />
+                {/* <Input
+                  type="file"
+                  accept="image/*"
+                  ref={ref}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    onChange(event.target.files?.[0]);
+                    setImagePreview(file ? URL.createObjectURL(file) : null);
+                  }}
+                /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,14 +115,14 @@ export default function NewBillboard() {
             <FormItem>
               <FormLabel>Label</FormLabel>
               <FormControl>
-                <Input disabled={createBillboard.isLoading} {...field} />
+                <Input disabled={billboardQuery.isLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className="w-fit" disabled={createBillboard.isLoading}>
+        <Button className="w-fit" disabled={billboardQuery.isLoading}>
           Create
           <span className="sr-only">Create</span>
         </Button>

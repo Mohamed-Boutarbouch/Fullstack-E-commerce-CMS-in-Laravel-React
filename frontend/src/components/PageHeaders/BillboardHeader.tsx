@@ -20,8 +20,8 @@ export default function BillboardHeader() {
   const currentTitle = !currentRoute
     ? `Billboards (${0})`
     : currentRoute === 'new'
-    ? 'Create billboard'
-    : 'Edit billboard';
+    ? 'Create Billboard'
+    : 'Edit Billboard';
 
   return (
     <Shell>
