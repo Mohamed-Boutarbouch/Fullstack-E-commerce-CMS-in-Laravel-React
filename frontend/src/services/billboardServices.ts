@@ -40,6 +40,6 @@ export async function createBillboardApi(
     values,
   );
 
-  toast.success(`The billboard created successfully`);
+  toast.success('The billboard created successfully');
   return data;
 }

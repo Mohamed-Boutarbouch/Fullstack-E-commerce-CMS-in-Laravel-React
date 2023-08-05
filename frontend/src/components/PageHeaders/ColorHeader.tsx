@@ -7,21 +7,21 @@ import { Separator } from '@/components/ui/separator';
 import { Shell } from '@/components/Shell';
 import { getCurrentRouteNested } from '@/lib/utils';
 
-export default function BillboardHeader() {
+export default function ColorHeader() {
   const location = useLocation();
-  const currentRoute = getCurrentRouteNested(location.pathname, 'billboards');
+  const currentRoute = getCurrentRouteNested(location.pathname, 'colors');
 
   const currentMessage = !currentRoute
-    ? 'Mange billboards for your store'
+    ? 'Mange colors for your store'
     : currentRoute === 'new'
-    ? 'Add new billboard'
-    : 'Edit a billboard';
+    ? 'Add new color'
+    : 'Edit a color';
 
   const currentTitle = !currentRoute
-    ? `Billboards (${0})`
+    ? `Colors (${0})`
     : currentRoute === 'new'
-    ? 'Create billboard'
-    : 'Edit billboard';
+    ? 'Create color'
+    : 'Edit color';
 
   return (
     <Shell>

@@ -16,12 +16,15 @@ import Billboard from '@/pages/Billboards/Billboard';
 import NewBillboard from '@/pages/Billboards/NewBillboard';
 import Products from '@/pages/Products';
 import Categories from '@/pages/Categories';
-import Colors from '@/pages/Colors';
+import Colors from '@/pages/Colors/Colors';
 import Sizes from '@/pages/Sizes';
 import Orders from '@/pages/Orders';
 import ThemeProvider from '@/context/ThemeProvider';
 import { ModalProvider } from '@/context/ModalContext';
-import BillboardHeader from './components/PageHeaders/BillboardHeader';
+import BillboardHeader from '@/components/PageHeaders/BillboardHeader';
+import NewColor from '@/pages/Colors/NewColor';
+import ColorHeader from '@/components/PageHeaders/ColorHeader';
+import EditColor from '@/pages/Colors/EditColor';
 
 const queryClient = new QueryClient();
 
@@ -46,10 +49,16 @@ export default function App() {
                   <Route path="new" element={<NewBillboard />} />
                   <Route path=":billboardId" element={<Billboard />} />
                 </Route>
+
+                <Route path=":storeId/colors" element={<ColorHeader />}>
+                  <Route index element={<Colors />} />
+                  <Route path="new" element={<NewColor />} />
+                  <Route path=":colorId" element={<EditColor />} />
+                </Route>
+                {/* <Route path=":storeId/colors" element={<Colors />} /> */}
                 <Route path=":storeId/overview" element={<Overview />} />
                 <Route path=":storeId/billboards" element={<Billboards />} />
                 <Route path=":storeId/categories" element={<Categories />} />
-                <Route path=":storeId/colors" element={<Colors />} />
                 <Route path=":storeId/sizes" element={<Sizes />} />
                 <Route path=":storeId/orders" element={<Orders />} />
                 <Route path=":storeId/products" element={<Products />} />
