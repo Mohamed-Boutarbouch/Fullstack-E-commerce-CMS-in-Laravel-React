@@ -82,6 +82,6 @@ class BillboardController extends Controller
     public function destroy(Billboard $billboard)
     {
         $billboard->delete();
-        return response()->json(['message' => 'Billboard deleted successfully']);
+        return response()->noContent();
     }
 }

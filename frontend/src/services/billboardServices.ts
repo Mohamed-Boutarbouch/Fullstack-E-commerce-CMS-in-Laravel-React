@@ -46,3 +46,16 @@ export async function createBillboardApi(values: CreateBillboardParams): Promise
   const { data }: AxiosResponse<Billboard> = await fileClient.post('/billboards', values);
   return data;
 }
+
+export async function deleteBillboardApi(billboardId: string): Promise<Billboard> {
+  try {
+    await fetchCsrfToken();
+
+    const { data }: AxiosResponse<Billboard> = await axiosClient.delete(
+      `billboards/${billboardId}`,
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

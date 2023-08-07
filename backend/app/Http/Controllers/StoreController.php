@@ -40,7 +40,28 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        return $store->load('products', 'sizes', 'colors', 'billboards', 'orders');
+        return $store->load(
+            [
+                'products' => function ($query) {
+                    $query->with('category', 'size', 'color', 'images');
+                },
+                'products.images',
+                'products.category',
+                'products.size',
+                'products.color',
+                'categories',
+                'billboards',
+                'sizes',
+                'colors',
+            ]
+        );
+        // 'orders.products',
+        // 'sizes',
+        // 'colors',
+        // 'billboards',
+        // 'category',
+        // 'categories',
+        // 'orders'
         // return new StoreResource($store);
     }
 

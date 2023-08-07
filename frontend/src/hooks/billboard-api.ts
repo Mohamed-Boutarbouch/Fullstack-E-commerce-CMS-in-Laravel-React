@@ -7,6 +7,7 @@ import {
   Billboard,
   CreateBillboardParams,
   createBillboardApi,
+  deleteBillboardApi,
   getBillboardApi,
   getBillboardsApi,
 } from '@/services/billboardServices';
@@ -43,25 +44,25 @@ export function useBillboardApi() {
     },
   });
 
-  // const updateStore = useMutation<void, unknown, UpdateStoreParams>({
+  // const updateBillboard = useMutation<void, unknown, UpdateBillboardParams>({
   //   mutationFn: async (values) => {
-  //     return await updateStoreApi(values);
+  //     return await updateBillboardApi(values);
   //   },
   //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['stores'] });
-  //     toast.success('The store name updated successfully');
+  //     queryClient.invalidateQueries({ queryKey: ['billboards'] });
+  //     toast.success('The billboard updated successfully');
   //   },
   // });
 
-  // const deleteStore = useMutation<StoreResponse, unknown, { storeId: string }>({
-  //   mutationFn: async (values) => {
-  //     return await deleteStoreApi(values.storeId);
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['stores'] });
-  //     toast.success('The store deleted successfully');
-  //   },
-  // });
+  const deleteBillboard = useMutation<Billboard, unknown, { billboardId: string }>({
+    mutationFn: async (values) => {
+      return await deleteBillboardApi(values.billboardId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['billboards'] });
+      toast.success('The Billboard deleted successfully');
+    },
+  });
 
-  return { billboardsQuery, billboardQuery, createBillboard };
+  return { billboardsQuery, billboardQuery, createBillboard, deleteBillboard };
 }

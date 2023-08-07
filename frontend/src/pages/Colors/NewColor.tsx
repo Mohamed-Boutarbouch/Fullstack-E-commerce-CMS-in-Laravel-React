@@ -11,20 +11,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { ColorSchema } from '@/lib/validations/color';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 type Inputs = z.infer<typeof ColorSchema>;
 
 export default function NewColor() {
-  const [hexCode, setHexCode] = useState('#5b9b8b');
-
   const form = useForm<Inputs>({
     resolver: zodResolver(ColorSchema),
     defaultValues: {
       name: '',
-      value: '',
+      value: '#5b9b8b',
     },
   });
 
@@ -32,41 +29,43 @@ export default function NewColor() {
     console.log(data);
   }
 
-  const gg = () => setHexCode(form.watch().value);
-
   return (
     <Form {...form}>
       <form
-        className="grid gap-4"
+        className="space-y-8 w-full"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="value"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Value</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} onChange={gg} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <ColorPreview hexCode={hexCode} />
+        <div className="grid grid-cols-3 gap-8">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="value"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Value</FormLabel>
+                <FormControl>
+                  <div className="flex items-center gap-x-4">
+                    <Input {...field} placeholder="Color value" />
+                    <ColorPreview hexCode={field.value} />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button
         // disabled={login.isLoading}
         >
